@@ -252,8 +252,8 @@ services:
 
 In the docker-compose.yml, we first start creating the Docker volume for the simulated HDFS (hadoop-distributed-file-system). After, we create one container for each cluster component. The JupyterLab container exposes its port on 8888 and binds the shared-workspace directory to the HDFS volume. Next, the spark-master container exposes its web UI port to 8080,  its master-worker connection port to 7077, and also binds to the HDFS volume. Two Spark worker containers named spark-worker-1 and spark-worker-2. Each container exposes its web UI port (mapped at 8081 and 8082 respectively) and binds to the HDFS volume. These containers have an environment step that specifies their hardware allocation:    
 
-** SPARK_WORKER_CORE is the number of cores **    
-** SPARK_WORKER_MEMORY is the amount of RAM **    
+**SPARK_WORKER_CORE is the number of cores**    
+**SPARK_WORKER_MEMORY is the amount of RAM**    
 
 By default, we are selecting one core and 512 MB of RAM for each container, but feel free to play with the hardware allocation; however, make sure to respect your machine limits to avoid memory issues. To the end, make sure you have provided enough resources for your Docker application to handle the selected values. Oh, right, don't forgot to ** docker-compose up -d ** to complete the docker building mission.   
 
