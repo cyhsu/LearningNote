@@ -2,7 +2,9 @@
 ========================================================================================
 
 <br/>
+
 ### System Requirements     
+
 - Docker 1.13.0+,  
 - Docker Compose 3.0+   
 
@@ -16,14 +18,18 @@ What we will do today including...
 4. Python and PySpark and Java 8.  
 
 <br/>  
+
 ## Cluster Overview  
+
 The cluster is composed of four main components: the JupyterLab, the Spark master node and two Spark workers nodes. The user connects to the master node and submits Spark commands through the JupyterLab notebooks. The master node then processes the input and distributes the computing workload to workers nodes, and sending back the results to the JupyterLab interface. The components are connected using a localhost network and share data among each other thru a shared mounted volume that simulates an HDFS.  
 ![Concept Images][https://www.kdnuggets.com/wp-content/uploads/perez-spark-docker-1.png]     
 
 In other words, we need to create, build and compose the Docker images for JupyterLab and Spark nodes. The cluster base image will download and install common software tools, i.e. Python, and will create the shared directory for the HDFS. Spark notes will be integrated into a Spark base image.   
 
 <br/>
+
 ## Docker Images  
+
 Here I am introducing the docker images for each component.  
 If you don't know dockerfile well, I will recommend that you should go google it or go to my docker learning note to get basic knowledge.  
 
@@ -126,7 +132,11 @@ ARG jupyterlab_version=2.1.5
 
 RUN apt-get update -y && \
     apt-get install -y python3-pip && \
-    pip3 install wget pyspark==${spark_version} jupyterlab==${jupyterlab_version}
+    pip3 install wget pyspark==${spark_version} jupyterlab==${jupyterlab_version} \
+    netCDF4==${netCDF4_version} xarray==${xarray_version} scipy==${scipy_version} && \
+    pip3 install "dask[complete]" && \
+    git clone git clone https://github.com/andersy005/spark-xarray.git && \
+    cd spark-xarray && python setup.py install
 
 # -- Runtime
 
@@ -139,7 +149,9 @@ Note that since we use Docker *ARG* on Dockerfiles to specify software versions,
 
 
 <br/>  
+
 ## Building Docker images
+
 Now, if you finished the inputs, the Docker images are ready. Let's build them up.
 
 - build.sh
@@ -179,7 +191,9 @@ docker build \
 
 
 <br/>  
+
 ## Composing the cluster   
+
 Now, we can use **docker-compose** for our cluster. Again, you need to know the basic knowledge of Docker. Here, we will create the JuyterLab and Spark nodes containers, expose their ports for the localhost network and connect them to the simulated HDFS.   
 
 - docker-compose.yml
@@ -189,6 +203,10 @@ volumes:
   shared-workspace:
     name: "hadoop-distributed-file-system"
     driver: local
+    driver_opts:
+      o: bind
+      type: none 
+      device: /Users/cyhsu/dev/git-blog/LearningNote/ApacheSpark/Volumes
 services:
   jupyterlab:
     image: jupyterlab
