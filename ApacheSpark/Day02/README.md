@@ -21,7 +21,8 @@ What we will do today including...
 
 ## Cluster Overview  
 
-The cluster is composed of four main components: the JupyterLab, the Spark master node and two Spark workers nodes. The user connects to the master node and submits Spark commands through the JupyterLab notebooks. The master node then processes the input and distributes the computing workload to workers nodes, and sending back the results to the JupyterLab interface. The components are connected using a localhost network and share data among each other thru a shared mounted volume that simulates an HDFS.  
+The cluster is composed of four main components: the JupyterLab, the Spark master node and two Spark workers nodes. The user connects to the master node and submits Spark commands through the JupyterLab notebooks. The master node then processes the input and distributes the computing workload to workers nodes, and sending back the results to the JupyterLab interface. The components are connected using a localhost network and share data among each other thru a shared mounted volume that simulates an HDFS.   
+
 ![Concept Images][https://www.kdnuggets.com/wp-content/uploads/perez-spark-docker-1.png]     
 
 In other words, we need to create, build and compose the Docker images for JupyterLab and Spark nodes. The cluster base image will download and install common software tools, i.e. Python, and will create the shared directory for the HDFS. Spark notes will be integrated into a Spark base image.   
@@ -255,7 +256,7 @@ In the docker-compose.yml, we first start creating the Docker volume for the sim
 **SPARK_WORKER_CORE is the number of cores**    
 **SPARK_WORKER_MEMORY is the amount of RAM**    
 
-By default, we are selecting one core and 512 MB of RAM for each container, but feel free to play with the hardware allocation; however, make sure to respect your machine limits to avoid memory issues. To the end, make sure you have provided enough resources for your Docker application to handle the selected values. Oh, right, don't forgot to ** docker-compose up -d ** to complete the docker building mission.   
+By default, we are selecting one core and 512 MB of RAM for each container, but feel free to play with the hardware allocation; however, make sure to respect your machine limits to avoid memory issues. To the end, make sure you have provided enough resources for your Docker application to handle the selected values. Oh, right, don't forgot to **docker-compose up -d** to complete the docker building mission.   
 
 Once finished, check out 
 - JupyterLab at localhost:8888  
