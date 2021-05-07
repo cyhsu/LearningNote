@@ -23,7 +23,7 @@ What we will do today including...
 
 The cluster is composed of four main components: the JupyterLab, the Spark master node and two Spark workers nodes. The user connects to the master node and submits Spark commands through the JupyterLab notebooks. The master node then processes the input and distributes the computing workload to workers nodes, and sending back the results to the JupyterLab interface. The components are connected using a localhost network and share data among each other thru a shared mounted volume that simulates an HDFS.   
 
-![Concept Images][https://www.kdnuggets.com/wp-content/uploads/perez-spark-docker-1.png]     
+![Concept Images](https://www.kdnuggets.com/wp-content/uploads/perez-spark-docker-1.png)     
 
 In other words, we need to create, build and compose the Docker images for JupyterLab and Spark nodes. The cluster base image will download and install common software tools, i.e. Python, and will create the shared directory for the HDFS. Spark notes will be integrated into a Spark base image.   
 
