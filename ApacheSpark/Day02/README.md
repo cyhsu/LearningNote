@@ -207,11 +207,12 @@ volumes:
     driver_opts:
       o: bind
       type: none 
-      device: /Users/cyhsu/dev/git-blog/LearningNote/ApacheSpark/Volumes
+      device: ./Volumes
 services:
   jupyterlab:
     image: jupyterlab
     container_name: jupyterlab
+    restart: always
     ports:
       - 8888:8888
     volumes:
@@ -219,19 +220,21 @@ services:
   spark-master:
     image: spark-master
     container_name: spark-master
+    restart: always
     ports:
-      - 8080:8080
+      - 8083:8080
       - 7077:7077
     volumes:
       - shared-workspace:/opt/workspace
   spark-worker-1:
     image: spark-worker
     container_name: spark-worker-1
+    restart: always
     environment:
       - SPARK_WORKER_CORES=1
       - SPARK_WORKER_MEMORY=512m
     ports:
-      - 8081:8081
+      - 8084:8081
     volumes:
       - shared-workspace:/opt/workspace
     depends_on:
@@ -239,11 +242,12 @@ services:
   spark-worker-2:
     image: spark-worker
     container_name: spark-worker-2
+    restart: always
     environment:
       - SPARK_WORKER_CORES=1
       - SPARK_WORKER_MEMORY=512m
     ports:
-      - 8082:8081
+      - 8085:8081
     volumes:
       - shared-workspace:/opt/workspace
     depends_on:
@@ -260,6 +264,6 @@ By default, we are selecting one core and 512 MB of RAM for each container, but 
 
 Once finished, check out 
 - JupyterLab at localhost:8888  
-- Spark-master at localhost:8080  
-- Spark-worker-1 at localhost:8081  
-- Spark-worker-2 at localhost:8082  
+- Spark-master at localhost:8083  
+- Spark-worker-1 at localhost:8084  
+- Spark-worker-2 at localhost:8085  
